@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `products` ADD COLUMN `status` VARCHAR(191) NOT NULL DEFAULT 'ACTIVE';
+
+-- AlterTable
+ALTER TABLE `services` ADD COLUMN `status` VARCHAR(191) NOT NULL DEFAULT 'ACTIVE';
