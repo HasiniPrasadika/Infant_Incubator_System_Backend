@@ -37,3 +37,18 @@ model User {
   
   @@map("users")
 }
+
+model Baby {
+  id             Int       @id @default(autoincrement())
+  birthWeight    Float
+  currentWeight  Float
+  birthDate      DateTime
+  gender         String
+  notes          String?
+  isDeleted      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@map("babies")
+}
+

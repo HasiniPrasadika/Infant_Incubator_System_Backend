@@ -29,6 +29,8 @@ export enum ErrorCode {
 
     MISSING_FIELD = 5001,
 
+    BABY_NOT_FOUND = 6001,
+
 
    
 }
