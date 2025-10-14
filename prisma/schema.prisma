@@ -18,6 +18,19 @@ enum Role {
   PARENT
 }
 
+enum JaundiceStatus {
+  NORMAL
+  ABNORMAL
+}
+
+enum CryStatus {
+  BURPING
+  TIRED
+  HUNGRY
+  DISCOMFORT
+  BELLY_PAIN
+}
+
 model User {
   id Int @id @default(autoincrement())
   name String?
@@ -35,20 +48,84 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+  babyId Int?  
+  baby Baby?   @relation(fields: [babyId], references: [id]) 
+  
   @@map("users")
 }
 
+
 model Baby {
   id             Int       @id @default(autoincrement())
+  name           String
   birthWeight    Float
   currentWeight  Float
   birthDate      DateTime
   gender         String
   notes          String?
+  blood          String
+  incubatorNo    Int?
+  jaundiceStatus JaundiceStatus
+  cryStatus      CryStatus?
+  cryTimeUpdate  DateTime?
   isDeleted      Boolean   @default(false)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
   @@map("babies")
+  User User[]
+  Temperature Temperature[]
+  Spo2 Spo2[]
+  heartrate heartrate[]
+  humidity humidity[]
 }
+
+model Temperature {
+  id         Int       @id @default(autoincrement())
+  babyId     Int
+  temperature Float
+  timestamp  DateTime
+  createdAt  DateTime  @default(now())
+  
+  baby       Baby      @relation(fields: [babyId], references: [id])
+
+  @@map("temperatures")
+}
+
+model Spo2 {
+  id         Int       @id @default(autoincrement())
+  babyId     Int
+  spo2 Float
+  timestamp  DateTime
+  createdAt  DateTime  @default(now())
+  
+  baby       Baby      @relation(fields: [babyId], references: [id])
+
+  @@map("spo2s")
+}
+
+model heartrate {
+  id         Int       @id @default(autoincrement())
+  babyId     Int
+  heartRate Float
+  timestamp  DateTime
+  createdAt  DateTime  @default(now())
+  
+  baby       Baby      @relation(fields: [babyId], references: [id])
+
+  @@map("heartrates")
+}
+
+model humidity {
+  id         Int       @id @default(autoincrement())
+  babyId     Int
+  humidity Float
+  timestamp  DateTime
+  createdAt  DateTime  @default(now())
+  
+  baby       Baby      @relation(fields: [babyId], references: [id])
+
+  @@map("humidities")
+}
+
 

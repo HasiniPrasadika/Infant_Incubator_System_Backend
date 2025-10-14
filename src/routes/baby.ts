@@ -9,13 +9,29 @@ import {
   getBabyById,
   getAllBabies,
 } from '../controllers/baby';
+import { getTemperatureHistory, saveTemperature } from '../controllers/temperature';
+import { getHeartRateHistory, saveHeartRate } from '../controllers/heartrate';
+import { getSpo2History, saveSpo2 } from '../controllers/spo2';
+import { getHumidityHistory, saveHumidity } from '../controllers/humidity';
 
 const babyRoutes: Router = Router();
 
 babyRoutes.post('/', [authMiddleware, adminMiddleware], errorHandler(createBaby));
-babyRoutes.put('/:id', [authMiddleware, adminMiddleware], errorHandler(updateBaby));
+babyRoutes.put('/:id', errorHandler(updateBaby));
 babyRoutes.delete('/:id', [authMiddleware, adminMiddleware], errorHandler(deleteBaby));
-babyRoutes.get('/:id', [authMiddleware], errorHandler(getBabyById));
-babyRoutes.get('/', [authMiddleware], errorHandler(getAllBabies));
+babyRoutes.get('/:id', errorHandler(getBabyById));
+babyRoutes.get('/', errorHandler(getAllBabies));
+
+babyRoutes.post('/save-temp', errorHandler(saveTemperature));
+babyRoutes.get('/temp/:babyId/:month/:year', errorHandler(getTemperatureHistory));
+
+babyRoutes.post('/save-heart-rate', errorHandler(saveHeartRate));
+babyRoutes.get('/heart-rate/:babyId/:month/:year', errorHandler(getHeartRateHistory));
+
+babyRoutes.post('/save-spo2', errorHandler(saveSpo2));
+babyRoutes.get('/spo2/:babyId/:month/:year', errorHandler(getSpo2History));
+
+babyRoutes.post('/save-humidity', errorHandler(saveHumidity));
+babyRoutes.get('/humidity/:babyId/:month/:year', errorHandler(getHumidityHistory));
 
 export default babyRoutes;

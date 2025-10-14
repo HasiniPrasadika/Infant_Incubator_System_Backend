@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `babies` MODIFY `cryStatus` ENUM('BURPING', 'TIRED', 'HUNGRY', 'DISCOMFORT', 'BELLY_PAIN') NULL,
+    MODIFY `cryTimeUpdate` DATETIME(3) NULL;

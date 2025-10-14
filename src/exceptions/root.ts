@@ -31,6 +31,11 @@ export enum ErrorCode {
 
     BABY_NOT_FOUND = 6001,
 
+    INVALID_ROLE = 7001,
+    INVALID_TOKEN = 7002,
+    TOKEN_EXPIRED = 7003,
+    UNAUTHORIZED_ACCESS = 7004,
+
 
    
 }

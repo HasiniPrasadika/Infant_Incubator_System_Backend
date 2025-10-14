@@ -40,39 +40,43 @@ export const initializeAdmin = async (
 };
 
 //Login
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
 
-  let user = await prismaClient.user.findUnique({
-    where: { username }
-  });
-  if (!user) {
-    throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
-  }
+  try {
+    let user = await prismaClient.user.findUnique({
+      where: { username }
+    });
 
-  if (!compareSync(password, user.password)) {
-    throw new BadRequestsException(
-      "Incorrect password",
-      ErrorCode.INCORRECT_PASSWORD
+    if (!user) {
+      throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
+    }
+
+    if (!compareSync(password, user.password)) {
+      throw new BadRequestsException(
+        "Incorrect password", ErrorCode.INCORRECT_PASSWORD
+      );
+    }
+
+    const token = jwt.sign(
+      { userId: user.id },
+      JWT_SECRET,
+      { expiresIn: '1h' } // Optionally, add an expiry time for the token
     );
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        role: user.role
+      }
+    });
+
+  } catch (error) {
+    next(error); // Pass the error to the global error handler
   }
-
-  const token = jwt.sign(
-    {
-      userId: user.id,
-    },
-    JWT_SECRET
-  );
-
-  res.json({
-    token,
-    user: {
-      id: user.id,
-      name: user.name,
-      username: user.username,
-      role: user.role
-    },
-  });
 };
 
 //Get the logged in user details
